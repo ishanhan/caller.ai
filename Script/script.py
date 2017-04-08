@@ -4,10 +4,13 @@ import sys
 import requests
 import json
 import random
+from subprocess import call
 
+def say(msg):
+    call(["espeak", '-ven+f3', msg], shell=True)
 
 def record():
-    session_id = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') for i in range(8))
+    session_id = 'zeokav'
     r = sr.Recognizer()
     m = sr.Microphone()
     value = ""
@@ -31,9 +34,16 @@ def record():
         pass
 
 def send_to_wit(input_str, session):
-    response = requests.post(url='https://api.wit.ai/converse?v=20170408&session_id='+session+'&q='+input_str,headers={ "Content-Type": "application/json","Accept": "application/json","Authorization": "Bearer Y6V5XF5UNI2ETGKO3NUJLWANYKUKJIJ2"})
-    dict_response = json.loads(response.text)
-    print (dict_response)
+    while True:
+        response = requests.post(url='https://api.wit.ai/converse?v=20170408&session_id='+session+'&q='+input_str,headers={ "Content-Type": "application/json","Accept": "application/json","Authorization": "Bearer Y6V5XF5UNI2ETGKO3NUJLWANYKUKJIJ2"})
+        dict_response = json.loads(response.text)
+        print (dict_response)
+        if(dict_response['type'] == 'stop'):
+            return
+        try:
+            say(dict_response['msg'])
+        except Exception as e:
+            print (e)
 
 if __name__ == "__main__":
     record()
