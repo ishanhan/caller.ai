@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Wit Example</title>
+
+
+    <link href="../static/bootstrap.min.css" rel="stylesheet">\
+    <link href='https://fonts.googleapis.com/css?family=Comfortaa:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:400,600italic' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <div class="container">
+        
+        <div class="jumbotron" style = "margin-top:3pc">
+            
+            <p class="lead"></p>
+            {% if output %}
+            <p> {{ input }}</p>
+            <p> {{ output['msg'] }}</p>
+            <p> {{ output['entities'] }}</p>
+            <p> {{ output['confidence'] }}</p>
+            <p> {{ output['type'] }}</p>
+            
+            {% endif %}
+
+        </div>
+
+
+
+        <footer class="footer">
+            
+        </footer>
+
+    </div>
+</body>
+
+</html>
