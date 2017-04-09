@@ -6,7 +6,7 @@ import json
 import random
 from subprocess import call
 
-data_plans = [["0.1GB Booster Plans", 11 ], ["1GB Booster Plans", 51], ["2GB Booster Plans", 91]]
+data_plans = [["11 Booster Plans", 1 ], ["51 Booster Plans", 2], ["100 Booster Plans", 3]]
 calling_plans = [["199 Super Saver", 199], ["299 Super Saver", 299], ["399 Super Saver", 399]]
 already_in_use_numbers = ["9829055445", "9731794141", "8954012345","9663595184"]
 
@@ -42,13 +42,6 @@ def send_to_wit(input_str, session):
     dict_response = json.loads(response.text)
     print (dict_response)
     while dict_response['type']!='stop':
-        # if(dict_response['entities']['operation']):
-        # print (dict_response['entities']['operation'])
-        # for data in dict_response['entities']:
-        #     print (data)
-        #     for i in dict_response['entities'][data]:
-        #         print (i['value'])
-
         if dict_response['type'] == 'action':
             try:
                 if dict_response['action'] == 'updateNumber':
@@ -65,8 +58,22 @@ def send_to_wit(input_str, session):
                         response = requests.post(url='https://api.wit.ai/converse?v=20170408&session_id='+session,headers={ "Content-Type": "application/json","Accept": "application/json","Authorization": "Bearer Y6V5XF5UNI2ETGKO3NUJLWANYKUKJIJ2"}, json={"notSuccessful":"True"})
                         dict_response = json.loads(response.text)
                         print (dict_response)
+                elif dict_response['action'] == 'getDataPlans':
+                    our_data_limit = "" + dict_response['entities']['dataplan'][0]['value']
+                    print (our_data_limit)
+                    for i in data_plans:
+                        print (i[1])
+                        if i[1] == int(our_data_limit[0]):
+                            plan = i[0]
+                            break
+                    print (plan)
+                    response = requests.post(url='https://api.wit.ai/converse?v=20170408&session_id='+session,headers={ "Content-Type": "application/json","Accept": "application/json","Authorization": "Bearer Y6V5XF5UNI2ETGKO3NUJLWANYKUKJIJ2"}, json={"size":plan})
+                    dict_response = json.loads(response.text)
+
             except Exception as e:
                 print ("Exception in action")
+            
+
 
         if dict_response['type'] == 'msg': 
             try:
