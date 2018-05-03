@@ -1,1 +1,5 @@
 *.html~
+checkpoint
+tflearn_logs/
+*tflearn*
+training_data
